@@ -24,6 +24,8 @@ import {ProgressGuideList} from '#/components/ProgressGuide/List'
 import {Text} from '#/components/Typography'
 import {SidebarLiveEventFeedsBanner} from '#/features/liveEvents/components/SidebarLiveEventFeedsBanner'
 
+import {SidebarEurope} from '#europe/widgets/SidebarEurope'
+
 function useWebQueryParams() {
   const navigation = useNavigation()
   const [params, setParams] = useState<Record<string, string>>({})
@@ -91,6 +93,8 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
           <ProgressGuideList />
         </>
       )}
+
+      <SidebarEurope />
 
       {showExploreScreenDuplicatedContent && <SidebarLiveEventFeedsBanner />}
       {showExploreScreenDuplicatedContent && <SidebarTrendingTopics />}
