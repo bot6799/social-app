@@ -1,4 +1,3 @@
-import {useState} from 'react'
 import {Pressable, View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
@@ -17,6 +16,8 @@ import {Text} from '#/components/Typography'
 
 import {type ZoneHierarchy} from '#europe/services/zone-api'
 
+const MAX_BROWSE_COUNTRIES = 8
+
 export function SidebarZones({
   zoneTree,
   homeZoneId,
@@ -26,64 +27,102 @@ export function SidebarZones({
 }) {
   const t = useTheme()
   const {_} = useLingui()
-  const [expanded, setExpanded] = useState(true)
+
+  // Flatten: find all countries and the home zone
+  const europeZone = zoneTree.find(z => z.id === 'europe')
+  const countries = europeZone?.children ?? []
+  const homeCountry = countries.find(c => c.id === homeZoneId)
+  const otherCountries = countries.filter(c => c.id !== homeZoneId)
 
   return (
-    <View style={[a.gap_xs]}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={_(msg`Toggle zones section`)}
-        accessibilityHint={_(msg`Expands or collapses the zones list`)}
-        onPress={() => setExpanded(v => !v)}
-        style={[a.flex_row, a.align_center, a.gap_xs]}>
-        <Text
-          style={[
-            a.text_2xs,
-            a.font_bold,
-            t.atoms.text_contrast_low,
-            {letterSpacing: 1.5},
-          ]}>
-          {expanded ? '\u25BE' : '\u25B8'} <Trans>YOUR ZONES</Trans>
-        </Text>
-      </Pressable>
+    <View style={[a.gap_md]}>
+      {/* Home Zone section */}
+      {homeCountry ? (
+        <View style={[a.gap_xs]}>
+          <View style={[a.flex_row, a.align_center, a.gap_xs]}>
+            <Text style={[a.text_sm]}>{'\u2605'}</Text>
+            <ZoneLink zone={homeCountry} bold />
+          </View>
+          {homeCountry.children && homeCountry.children.length > 0 && (
+            <View style={[a.flex_row, a.flex_wrap, a.gap_2xs, a.pl_lg]}>
+              {homeCountry.children.map((city, i) => (
+                <View key={city.id} style={[a.flex_row, a.align_center]}>
+                  {i > 0 && (
+                    <Text
+                      style={[a.text_xs, t.atoms.text_contrast_low, a.mr_2xs]}>
+                      {'\u00B7'}
+                    </Text>
+                  )}
+                  <ZoneLink zone={city} />
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
+      ) : (
+        <InlineLinkText
+          to="/europe/zones"
+          label={_(msg`Set your home zone`)}
+          style={[a.text_xs, t.atoms.text_contrast_medium]}>
+          <Trans>Set your home zone</Trans> {'\u2192'}
+        </InlineLinkText>
+      )}
 
-      {expanded && (
-        <View style={[a.gap_2xs]}>
-          {zoneTree.map(zone => (
-            <ZoneTreeNode
-              key={zone.id}
-              zone={zone}
-              homeZoneId={homeZoneId}
-              depth={0}
-            />
-          ))}
-          <InlineLinkText
-            to="/europe/zones"
-            label={_(msg`Browse all zones`)}
-            style={[a.text_xs, t.atoms.text_contrast_medium, a.mt_xs]}>
-            + <Trans>Browse all zones</Trans>
-          </InlineLinkText>
+      {/* Divider */}
+      {otherCountries.length > 0 && (
+        <View
+          style={[
+            {
+              borderTopWidth: 1,
+              borderColor: t.atoms.border_contrast_low.borderColor,
+            },
+          ]}
+        />
+      )}
+
+      {/* Browse Zones section */}
+      {otherCountries.length > 0 && (
+        <View style={[a.gap_xs]}>
+          <Text
+            style={[
+              a.text_2xs,
+              a.font_bold,
+              t.atoms.text_contrast_low,
+              {letterSpacing: 1.5},
+            ]}>
+            <Trans>BROWSE ZONES</Trans>
+          </Text>
+          <View style={[a.flex_row, a.flex_wrap, a.gap_2xs]}>
+            {otherCountries.slice(0, MAX_BROWSE_COUNTRIES).map((country, i) => (
+              <View key={country.id} style={[a.flex_row, a.align_center]}>
+                {i > 0 && (
+                  <Text
+                    style={[a.text_xs, t.atoms.text_contrast_low, a.mr_2xs]}>
+                    {'\u00B7'}
+                  </Text>
+                )}
+                <ZoneLink zone={country} />
+              </View>
+            ))}
+          </View>
+          {otherCountries.length > MAX_BROWSE_COUNTRIES && (
+            <InlineLinkText
+              to="/europe/zones"
+              label={_(msg`Browse all zones`)}
+              style={[a.text_xs, t.atoms.text_contrast_medium]}>
+              + {otherCountries.length - MAX_BROWSE_COUNTRIES}{' '}
+              <Trans>more</Trans>
+            </InlineLinkText>
+          )}
         </View>
       )}
     </View>
   )
 }
 
-function ZoneTreeNode({
-  zone,
-  homeZoneId,
-  depth,
-}: {
-  zone: ZoneHierarchy
-  homeZoneId: string | null
-  depth: number
-}) {
+function ZoneLink({zone, bold}: {zone: ZoneHierarchy; bold?: boolean}) {
   const t = useTheme()
   const {_} = useLingui()
-  const [childrenExpanded, setChildrenExpanded] = useState(false)
-  const hasChildren = zone.children && zone.children.length > 0
-  const isHome = zone.id === homeZoneId
-
   const selectedFeed = useSelectedFeed()
   const setSelectedFeed = useSetSelectedFeed()
   const navigation = useNavigation<NavigationProp>()
@@ -101,7 +140,6 @@ function ZoneTreeNode({
   const isActive = selectedFeed === descriptor
 
   const onZonePress = async () => {
-    // Auto-pin the feed if not already pinned
     const isPinned = pinnedFeedInfos?.some(f => f.uri === feedUri)
     if (!isPinned && currentAccount) {
       try {
@@ -110,94 +148,35 @@ function ZoneTreeNode({
         // Feed may not exist yet in the network — still switch locally
       }
     }
-
     setSelectedFeed(descriptor)
     navigation.navigate('Home')
   }
 
-  const onExpandPress = () => {
-    setChildrenExpanded(v => !v)
-  }
-
   return (
-    <View>
-      <View style={[a.flex_row, a.align_center, {paddingLeft: depth * 16}]}>
-        {/* Expand/collapse toggle for zones with children */}
-        {hasChildren ? (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={_(
-              msg`${childrenExpanded ? 'Collapse' : 'Expand'} ${zone.name}`,
-            )}
-            accessibilityHint={_(msg`Shows or hides child zones`)}
-            onPress={onExpandPress}
-            style={[{width: 16, alignItems: 'center'}]}>
-            <Text style={[a.text_xs, t.atoms.text_contrast_medium]}>
-              {childrenExpanded ? '\u25BE' : '\u25B8'}
-            </Text>
-          </Pressable>
-        ) : (
-          <View style={[{width: 16}]} />
-        )}
-
-        {/* Zone name — click to switch feed */}
-        <Pressable
-          accessibilityRole="link"
-          accessibilityLabel={_(msg`Switch to ${zone.name} feed`)}
-          accessibilityHint={_(msg`Switches the home feed to this zone`)}
-          onPress={() => {
-            void onZonePress()
-          }}
-          onHoverIn={onHoverIn}
-          onHoverOut={onHoverOut}
-          style={[
-            a.flex_1,
-            a.flex_row,
-            a.align_center,
-            a.gap_xs,
-            {paddingVertical: 3, paddingHorizontal: 4},
-            isActive && {backgroundColor: t.palette.primary_50},
-          ]}>
-          <Text
-            style={[
-              a.text_sm,
-              a.flex_1,
-              isActive
-                ? [t.atoms.text, a.font_semi_bold]
-                : hovered
-                  ? t.atoms.text
-                  : t.atoms.text_contrast_medium,
-              web(
-                hovered && !isActive ? {textDecorationLine: 'underline'} : {},
-              ),
-            ]}
-            numberOfLines={1}>
-            {zone.name}
-          </Text>
-          {isHome && (
-            <Text
-              style={[a.text_xs]}
-              accessibilityLabel={_(msg`Home zone`)}
-              accessibilityHint={_(msg`This is your home zone`)}>
-              {'\u2605'}
-            </Text>
-          )}
-        </Pressable>
-      </View>
-
-      {/* Children (expanded) */}
-      {hasChildren && childrenExpanded && (
-        <View>
-          {zone.children.map(child => (
-            <ZoneTreeNode
-              key={child.id}
-              zone={child}
-              homeZoneId={homeZoneId}
-              depth={depth + 1}
-            />
-          ))}
-        </View>
-      )}
-    </View>
+    <Pressable
+      accessibilityRole="link"
+      accessibilityLabel={_(msg`Switch to ${zone.name} feed`)}
+      accessibilityHint={_(msg`Switches the home feed to this zone`)}
+      onPress={() => {
+        void onZonePress()
+      }}
+      onHoverIn={onHoverIn}
+      onHoverOut={onHoverOut}>
+      <Text
+        style={[
+          a.text_xs,
+          isActive
+            ? [t.atoms.text, a.font_bold]
+            : bold
+              ? [t.atoms.text, a.font_semi_bold]
+              : hovered
+                ? t.atoms.text
+                : t.atoms.text_contrast_medium,
+          web(hovered && !isActive ? {textDecorationLine: 'underline'} : {}),
+        ]}
+        numberOfLines={1}>
+        {zone.name}
+      </Text>
+    </Pressable>
   )
 }

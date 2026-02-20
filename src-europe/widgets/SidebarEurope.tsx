@@ -8,7 +8,6 @@ import {InlineLinkText} from '#/components/Link'
 import {Text} from '#/components/Typography'
 
 import {useSidebarQuery} from '#europe/services/queries'
-import {SidebarIncidents} from '#europe/widgets/SidebarIncidents'
 import {SidebarQuickLinks} from '#europe/widgets/SidebarQuickLinks'
 import {SidebarZones} from '#europe/widgets/SidebarZones'
 
@@ -32,29 +31,14 @@ function SidebarEuropeInner() {
           <Trans>EUROPE SOCIAL</Trans>
         </Text>
         <InlineLinkText
-          to="/europe"
-          label={_(msg`Dashboard`)}
+          to="/settings/federation"
+          label={_(msg`Settings`)}
           style={[a.text_xs, t.atoms.text_contrast_medium]}>
-          <Trans>Dashboard</Trans>
+          {'\u2699'}
         </InlineLinkText>
       </View>
 
-      {/* What's Happening — incidents */}
-      <SidebarIncidents incidents={sidebar?.active_incidents} />
-
-      {/* Divider */}
-      {sidebar?.zone_tree && sidebar.zone_tree.length > 0 && (
-        <View
-          style={[
-            {
-              borderTopWidth: 1,
-              borderColor: t.atoms.border_contrast_low.borderColor,
-            },
-          ]}
-        />
-      )}
-
-      {/* Your Zones — zone tree with feed switching */}
+      {/* Zone tree with feed switching */}
       {isLoading ? (
         <View style={[a.gap_xs]}>
           <View style={[t.atoms.bg_contrast_50, {height: 12, width: '50%'}]} />

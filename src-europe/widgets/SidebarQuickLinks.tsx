@@ -12,26 +12,18 @@ export function SidebarQuickLinks() {
 
   return (
     <View style={[a.flex_row, a.align_center, a.gap_sm, a.flex_wrap]}>
-      <Text style={[a.text_xs, t.atoms.text_contrast_low]}>{'\u26A1'}</Text>
       <InlineLinkText
-        to="/europe"
-        label={_(msg`Dashboard`)}
+        to="/settings/federation"
+        label={_(msg`Settings`)}
         style={[a.text_xs, t.atoms.text_contrast_medium]}>
-        {_(msg`Dashboard`)}
+        {_(msg`Settings`)}
       </InlineLinkText>
       <Text style={[a.text_xs, t.atoms.text_contrast_low]}>{'\u00B7'}</Text>
       <InlineLinkText
-        to="/europe/translation"
-        label={_(msg`Translate`)}
+        to="/support"
+        label={_(msg`Help`)}
         style={[a.text_xs, t.atoms.text_contrast_medium]}>
-        {_(msg`Translate`)}
-      </InlineLinkText>
-      <Text style={[a.text_xs, t.atoms.text_contrast_low]}>{'\u00B7'}</Text>
-      <InlineLinkText
-        to="/europe/zones"
-        label={_(msg`Zones`)}
-        style={[a.text_xs, t.atoms.text_contrast_medium]}>
-        {_(msg`Zones`)}
+        {_(msg`Help`)}
       </InlineLinkText>
     </View>
   )

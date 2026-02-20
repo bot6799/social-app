@@ -6,47 +6,58 @@ import {usePreferencesQuery} from '../queries/preferences'
 import {useSession} from '../session'
 import {useLanguagePrefs} from './languages'
 
-export function useFeedTuners(feedDesc: FeedDescriptor) {
+import {filterEuropeOnly} from '#europe/feeds/EuropeFeedFilter'
+
+export function useFeedTuners(feedDesc: FeedDescriptor, europeOnly?: boolean) {
   const langPrefs = useLanguagePrefs()
   const {data: preferences} = usePreferencesQuery()
   const {currentAccount} = useSession()
 
   return useMemo(() => {
+    const tuners = []
+
+    // Europe-only filter — prepend so it runs first
+    if (europeOnly) {
+      tuners.push(filterEuropeOnly)
+    }
+
     if (feedDesc.startsWith('author')) {
       if (feedDesc.endsWith('|posts_with_replies')) {
         // TODO: Do this on the server instead.
-        return [FeedTuner.removeReposts]
+        tuners.push(FeedTuner.removeReposts)
+        return tuners
       }
     }
     if (feedDesc.startsWith('feedgen')) {
-      return [
+      tuners.push(
         FeedTuner.preferredLangOnly(langPrefs.contentLanguages),
         FeedTuner.removeMutedThreads,
-      ]
+      )
+      return tuners
     }
     if (feedDesc === 'following' || feedDesc.startsWith('list')) {
-      const feedTuners = [FeedTuner.removeOrphans]
+      tuners.push(FeedTuner.removeOrphans)
 
       if (preferences?.feedViewPrefs.hideReposts) {
-        feedTuners.push(FeedTuner.removeReposts)
+        tuners.push(FeedTuner.removeReposts)
       }
       if (preferences?.feedViewPrefs.hideReplies) {
-        feedTuners.push(FeedTuner.removeReplies)
+        tuners.push(FeedTuner.removeReplies)
       } else {
-        feedTuners.push(
+        tuners.push(
           FeedTuner.followedRepliesOnly({
             userDid: currentAccount?.did || '',
           }),
         )
       }
       if (preferences?.feedViewPrefs.hideQuotePosts) {
-        feedTuners.push(FeedTuner.removeQuotePosts)
+        tuners.push(FeedTuner.removeQuotePosts)
       }
-      feedTuners.push(FeedTuner.dedupThreads)
-      feedTuners.push(FeedTuner.removeMutedThreads)
+      tuners.push(FeedTuner.dedupThreads)
+      tuners.push(FeedTuner.removeMutedThreads)
 
-      return feedTuners
+      return tuners
     }
-    return []
-  }, [feedDesc, currentAccount, preferences, langPrefs])
+    return tuners
+  }, [feedDesc, currentAccount, preferences, langPrefs, europeOnly])
 }

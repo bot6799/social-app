@@ -31,7 +31,10 @@ import {
 import {truncateAndInvalidate} from '#/state/queries/util'
 import {useSession} from '#/state/session'
 import {useSetMinimalShellMode} from '#/state/shell'
+import {atoms as a, useTheme} from '#/alf'
+import * as SegmentedControl from '#/components/forms/SegmentedControl'
 import {useHeaderOffset} from '#/components/hooks/useHeaderOffset'
+import {Text} from '#/components/Typography'
 import {useAnalytics} from '#/analytics'
 import {IS_NATIVE} from '#/env'
 import {PostFeed} from '../posts/PostFeed'
@@ -64,6 +67,7 @@ export function FeedPage({
   feedInfo: FeedSourceInfo
 }) {
   const ax = useAnalytics()
+  const t = useTheme()
   const {hasSession} = useSession()
   const {_} = useLingui()
   const navigation = useNavigation<NavigationProp<AllNavigatorParams>>()
@@ -76,6 +80,12 @@ export function FeedPage({
   const scrollElRef = useRef<ListMethods>(null)
   const [hasNew, setHasNew] = useState(false)
   const setHomeBadge = useSetHomeBadge()
+  const [europeOnly, setEuropeOnly] = useState(false)
+
+  const mergedFeedParams = useMemo(
+    () => ({...feedParams, europeOnly}),
+    [feedParams, europeOnly],
+  )
   const isVideoFeed = useMemo(() => {
     const isBskyVideoFeed = VIDEO_FEED_URIS.includes(feedInfo.uri)
     const feedIsVideoMode =
@@ -139,6 +149,17 @@ export function FeedPage({
 
   const shouldPrefetch = IS_NATIVE && isPageAdjacent
   const isDiscoverFeed = feedInfo.uri === DISCOVER_FEED_URI
+
+  const europeEmptyState = useCallback(() => {
+    return (
+      <View style={[a.p_xl, a.align_center, a.gap_md]}>
+        <Text style={[a.text_md, t.atoms.text_contrast_medium, a.text_center]}>
+          {_(msg`No Europe Social posts yet. Be one of the first!`)}
+        </Text>
+      </View>
+    )
+  }, [_, t])
+
   return (
     <View
       testID={testID}
@@ -146,17 +167,40 @@ export function FeedPage({
       dataSet={{nosnippet: isDiscoverFeed ? '' : undefined}}>
       <MainScrollProvider>
         <FeedFeedbackProvider value={feedFeedback}>
+          {hasSession && (
+            <View style={[a.flex_row, a.justify_end, a.px_lg, a.py_xs]}>
+              <View style={[{maxWidth: 160}]}>
+                <SegmentedControl.Root
+                  label={_(msg`Feed scope`)}
+                  type="radio"
+                  size="small"
+                  value={europeOnly ? 'europe' : 'all'}
+                  onChange={v => setEuropeOnly(v === 'europe')}>
+                  <SegmentedControl.Item value="europe" label={_(msg`Europe`)}>
+                    <SegmentedControl.ItemText>
+                      {_(msg`Europe`)}
+                    </SegmentedControl.ItemText>
+                  </SegmentedControl.Item>
+                  <SegmentedControl.Item value="all" label={_(msg`All`)}>
+                    <SegmentedControl.ItemText>
+                      {_(msg`All`)}
+                    </SegmentedControl.ItemText>
+                  </SegmentedControl.Item>
+                </SegmentedControl.Root>
+              </View>
+            </View>
+          )}
           <PostFeed
             testID={testID ? `${testID}-feed` : undefined}
             enabled={isPageFocused || shouldPrefetch}
             feed={feed}
-            feedParams={feedParams}
+            feedParams={mergedFeedParams}
             pollInterval={POLL_FREQ}
             disablePoll={hasNew || !isPageFocused}
             scrollElRef={scrollElRef}
             onScrolledDownChange={setIsScrolledDown}
             onHasNew={setHasNew}
-            renderEmptyState={renderEmptyState}
+            renderEmptyState={europeOnly ? europeEmptyState : renderEmptyState}
             renderEndOfFeed={renderEndOfFeed}
             headerOffset={headerOffset}
             savedFeedConfig={savedFeedConfig}

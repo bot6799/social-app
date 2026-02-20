@@ -68,6 +68,7 @@ export interface FeedParams {
   mergeFeedEnabled?: boolean
   mergeFeedSources?: string[]
   feedCacheKey?: 'discover' | 'explore' | undefined
+  europeOnly?: boolean
 }
 
 type RQPageParam = {cursor: string | undefined; api: FeedAPI} | undefined
@@ -131,7 +132,7 @@ export function usePostFeedQuery(
   params?: FeedParams,
   opts?: {enabled?: boolean; ignoreFilterFor?: string},
 ) {
-  const feedTuners = useFeedTuners(feedDesc)
+  const feedTuners = useFeedTuners(feedDesc, params?.europeOnly)
   const moderationOpts = useModerationOpts()
   const {data: preferences} = usePreferencesQuery()
   /**
