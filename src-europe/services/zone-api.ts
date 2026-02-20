@@ -22,7 +22,10 @@ export interface ZoneResolution {
 export interface UserHomeZone {
   did: string
   zone_id: string
-  zone: Zone
+  verified: boolean
+  verified_at: string | null
+  set_at: string
+  updated_at: string
 }
 
 export interface ZoneHierarchy extends Zone {
@@ -62,7 +65,7 @@ class ZoneAPI {
 
   async getHierarchy(parentId?: string): Promise<Zone[]> {
     const url = parentId
-      ? `${this.baseUrl}/zones/hierarchy?parent_id=${parentId}`
+      ? `${this.baseUrl}/zones/hierarchy?parent_id=${encodeURIComponent(parentId)}`
       : `${this.baseUrl}/zones/hierarchy`
 
     const response = await fetch(url)
@@ -90,11 +93,25 @@ class ZoneAPI {
     return response.json()
   }
 
-  async setHomeZone(did: string, zoneId: string): Promise<UserHomeZone> {
+  async searchZones(query: string, limit = 10): Promise<Zone[]> {
+    const response = await fetch(
+      `${this.baseUrl}/zones/search?q=${encodeURIComponent(query)}&limit=${limit}`,
+    )
+    if (!response.ok) {
+      throw new Error(`Zone API error: ${response.statusText}`)
+    }
+    return response.json()
+  }
+
+  async setHomeZone(
+    did: string,
+    zoneId: string,
+    verified = false,
+  ): Promise<UserHomeZone> {
     const response = await fetch(`${this.baseUrl}/zones/set-home`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({did, zone_id: zoneId}),
+      body: JSON.stringify({did, zone_id: zoneId, verified}),
     })
     if (!response.ok) {
       throw new Error(`Zone API error: ${response.statusText}`)
