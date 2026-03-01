@@ -30,14 +30,14 @@ let NavSignupCard = ({}: {}): React.ReactNode => {
 
   return (
     <View style={[{maxWidth: 245}]}>
-      <Link to="/" label="Bluesky - Home">
+      <Link to="/" label="Europe Social - Home">
         <Logo width={32} />
       </Link>
 
       <View style={[a.pt_lg]}>
         <Text
           style={[a.text_3xl, a.font_bold, {lineHeight: a.text_3xl.fontSize}]}>
-          <Trans>Join the conversation</Trans>
+          <Trans>Europe's Square. Your Voice.</Trans>
         </Text>
       </View>
 

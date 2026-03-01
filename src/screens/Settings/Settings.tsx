@@ -182,6 +182,14 @@ export function SettingsScreen({}: Props) {
             </SettingsList.ItemText>
           </SettingsList.LinkItem>
           <SettingsList.LinkItem
+            to="/settings/federation"
+            label={_(msg`Federation`)}>
+            <SettingsList.ItemIcon icon={EarthIcon} />
+            <SettingsList.ItemText>
+              <Trans>Federation</Trans>
+            </SettingsList.ItemText>
+          </SettingsList.LinkItem>
+          <SettingsList.LinkItem
             to="/settings/privacy-and-security"
             label={_(msg`Privacy and security`)}>
             <SettingsList.ItemIcon icon={LockIcon} />

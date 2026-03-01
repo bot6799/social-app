@@ -1,12 +1,14 @@
+import {createThemes} from '@bsky.app/alf'
+
+// Europe Social: use Europe blue (#003399) palette instead of Bluesky blue
 import {
-  createThemes,
-  DEFAULT_PALETTE,
-  DEFAULT_SUBDUED_PALETTE,
-} from '@bsky.app/alf'
+  EUROPE_PALETTE,
+  EUROPE_SUBDUED_PALETTE,
+} from '#europe/theme/palette'
 
 const DEFAULT_THEMES = createThemes({
-  defaultPalette: DEFAULT_PALETTE,
-  subduedPalette: DEFAULT_SUBDUED_PALETTE,
+  defaultPalette: EUROPE_PALETTE,
+  subduedPalette: EUROPE_SUBDUED_PALETTE,
 })
 
 export const themes = {

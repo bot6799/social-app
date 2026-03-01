@@ -209,10 +209,10 @@ export function Takendown() {
                 <Trans>
                   Your account was found to be in violation of the{' '}
                   <SimpleInlineLinkText
-                    label={_(msg`Bluesky Social Terms of Service`)}
-                    to="https://bsky.social/about/support/tos"
+                    label={_(msg`Europe Social Terms of Service`)}
+                    to="https://europesocial.org/terms"
                     style={[a.text_md, a.leading_snug]}>
-                    Bluesky Social Terms of Service
+                    Europe Social Terms of Service
                   </SimpleInlineLinkText>
                   . You have been sent an email outlining the specific violation
                   and suspension period, if applicable. You can appeal this

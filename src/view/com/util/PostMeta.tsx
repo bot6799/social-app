@@ -19,6 +19,7 @@ import {ProfileHoverCard} from '#/components/ProfileHoverCard'
 import {Text} from '#/components/Typography'
 import {useSimpleVerificationState} from '#/components/verification'
 import {VerificationCheck} from '#/components/verification/VerificationCheck'
+import {EuropeBadge, isEuropeHandle} from '#europe/components/EuropeBadge'
 import {IS_ANDROID} from '#/env'
 import {useActorStatus} from '#/features/liveNow'
 import {TimeElapsed} from './TimeElapsed'
@@ -57,6 +58,7 @@ let PostMeta = (opts: PostMetaOpts): React.ReactNode => {
   const timestampLabel = niceDate(i18n, opts.timestamp)
   const verification = useSimpleVerificationState({profile: author})
   const {isActive: live} = useActorStatus(author)
+  const isEurope = isEuropeHandle(handle)
 
   const MaybeLinkText = opts.linkDisabled ? Text : WebOnlyInlineLinkText
 
@@ -121,6 +123,20 @@ let PostMeta = (opts: PostMetaOpts): React.ReactNode => {
                 <VerificationCheck
                   width={platform({android: 13, default: 12})}
                   verifier={verification.role === 'verifier'}
+                />
+              </View>
+            )}
+            {isEurope && (
+              <View
+                style={[
+                  a.pl_2xs,
+                  a.self_center,
+                  {
+                    marginTop: platform({web: 0, ios: 0, android: -1}),
+                  },
+                ]}>
+                <EuropeBadge
+                  width={platform({android: 13, default: 12})}
                 />
               </View>
             )}

@@ -10,19 +10,19 @@ export const color = {
 export const gradients = {
   primary: {
     values: [
-      [0, '#054CFF'],
-      [0.4, '#1085FE'],
-      [0.6, '#1085FE'],
-      [1, '#59B9FF'],
+      [0, '#002266'],
+      [0.4, '#003399'],
+      [0.6, '#003399'],
+      [1, '#6B84C4'],
     ],
-    hover_value: '#1085FE',
+    hover_value: '#003399',
   },
   sky: {
     values: [
-      [0, '#0A7AFF'],
-      [1, '#59B9FF'],
+      [0, '#003399'],
+      [1, '#6B84C4'],
     ],
-    hover_value: '#0A7AFF',
+    hover_value: '#003399',
   },
   midnight: {
     values: [

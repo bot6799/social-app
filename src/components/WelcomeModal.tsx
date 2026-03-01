@@ -1,19 +1,17 @@
 import {useEffect, useState} from 'react'
 import {Pressable, View} from 'react-native'
-import {ImageBackground} from 'expo-image'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 import {FocusGuards, FocusScope} from 'radix-ui/internal'
 
 import {useLoggedOutViewControls} from '#/state/shell/logged-out'
 import {Logo} from '#/view/icons/Logo'
+import {Logotype} from '#/view/icons/Logotype'
 import {atoms as a, flatten, useBreakpoints, web} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
 import {TimesLarge_Stroke2_Corner0_Rounded as XIcon} from '#/components/icons/Times'
 import {Text} from '#/components/Typography'
 import {useAnalytics} from '#/analytics'
-
-const welcomeModalBg = require('../../assets/images/welcome-modal-bg.jpg')
 
 interface WelcomeModalProps {
   control: {
@@ -86,36 +84,23 @@ export function WelcomeModal({control}: WelcomeModalProps) {
               maxHeight: 600,
               width: '90%',
               height: '90%',
-              backgroundColor: '#C0DCF0',
+              backgroundColor: '#000000',
             },
-            a.rounded_lg,
             a.overflow_hidden,
             a.zoom_in,
           ])}>
-          <ImageBackground
-            source={welcomeModalBg}
-            style={[a.flex_1, a.justify_center]}
-            contentFit="cover">
+          <View style={[a.flex_1, a.justify_center]}>
             <View style={[a.gap_2xl, a.align_center, a.p_4xl]}>
               <View
                 style={[
-                  a.flex_row,
                   a.align_center,
                   a.justify_center,
                   a.w_full,
                   a.p_0,
                 ]}>
-                <View style={[a.flex_row, a.align_center, a.gap_xs]}>
-                  <Logo width={26} />
-                  <Text
-                    style={[
-                      a.text_2xl,
-                      a.font_semi_bold,
-                      a.user_select_none,
-                      {color: '#354358', letterSpacing: -0.5},
-                    ]}>
-                    Bluesky
-                  </Text>
+                <Logo width={48} fill="white" />
+                <View style={[a.pt_md]}>
+                  <Logotype width={120} fill="#FFFFFF" />
                 </View>
               </View>
               <View
@@ -131,23 +116,23 @@ export function WelcomeModal({control}: WelcomeModalProps) {
                     gtMobile ? a.text_4xl : a.text_3xl,
                     a.font_semi_bold,
                     a.text_center,
-                    {color: '#354358'},
+                    {color: '#FFFFFF'},
                     web({
-                      backgroundImage:
-                        'linear-gradient(180deg, #313F54 0%, #667B99 83.65%, rgba(102, 123, 153, 0.50) 100%)',
-                      backgroundClip: 'text',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      color: 'transparent',
                       lineHeight: 1.2,
                       letterSpacing: -0.5,
                     }),
                   ]}>
-                  <Trans>Real people.</Trans>
+                  <Trans>Civic discourse for Europe.</Trans>
                   {'\n'}
-                  <Trans>Real conversations.</Trans>
-                  {'\n'}
-                  <Trans>Social media you control.</Trans>
+                  <Trans>Zone-based. Verified. Translated.</Trans>
+                </Text>
+                <Text
+                  style={[
+                    a.text_md,
+                    a.text_center,
+                    {color: '#999999', marginTop: 8},
+                  ]}>
+                  <Trans>Europe's Square. Your Voice.</Trans>
                 </Text>
               </View>
               <View style={[a.gap_md, a.align_center]}>
@@ -156,12 +141,14 @@ export function WelcomeModal({control}: WelcomeModalProps) {
                     onPress={onPressCreateAccount}
                     label={_(msg`Create account`)}
                     size="large"
-                    color="primary"
+                    color="secondary"
                     style={{
                       width: 200,
-                      backgroundColor: '#006AFF',
+                      backgroundColor: '#FFFFFF',
+                      borderColor: '#FFFFFF',
+                      borderRadius: 0,
                     }}>
-                    <ButtonText>
+                    <ButtonText style={{color: '#000000'}}>
                       <Trans>Create account</Trans>
                     </ButtonText>
                   </Button>
@@ -175,7 +162,7 @@ export function WelcomeModal({control}: WelcomeModalProps) {
                     hoverStyle={[a.bg_transparent]}>
                     {({hovered}) => (
                       <ButtonText
-                        style={[hovered && [a.underline], {color: '#006AFF'}]}>
+                        style={[hovered && [a.underline], {color: '#CCCCCC'}]}>
                         <Trans>Explore the app</Trans>
                       </ButtonText>
                     )}
@@ -186,7 +173,7 @@ export function WelcomeModal({control}: WelcomeModalProps) {
                     style={[
                       a.text_md,
                       a.text_center,
-                      {color: '#405168', lineHeight: 24},
+                      {color: '#999999', lineHeight: 24},
                     ]}>
                     <Trans>Already have an account?</Trans>{' '}
                     <Pressable
@@ -199,7 +186,7 @@ export function WelcomeModal({control}: WelcomeModalProps) {
                         style={[
                           a.font_medium,
                           {
-                            color: '#006AFF',
+                            color: '#FFFFFF',
                             fontSize: undefined,
                           },
                           signInLinkHovered && a.underline,
@@ -235,13 +222,13 @@ export function WelcomeModal({control}: WelcomeModalProps) {
                 <XIcon
                   size="md"
                   style={{
-                    color: '#354358',
+                    color: '#FFFFFF',
                     opacity: hovered || pressed || focused ? 1 : 0.7,
                   }}
                 />
               )}
             </Button>
-          </ImageBackground>
+          </View>
         </View>
       </FocusScope.FocusScope>
     </View>

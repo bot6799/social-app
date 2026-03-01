@@ -312,8 +312,8 @@ export function ViewMatches({
             largeTitle
             subtitleText={
               <Trans>
-                Bluesky is more fun with friends. Do you want to invite some of
-                yours?{' '}
+                Europe Social is more fun with friends. Do you want to invite
+                some of yours?{' '}
                 <InviteInfo
                   iconStyle={t.atoms.text_contrast_medium}
                   iconOffset={2}
@@ -563,7 +563,7 @@ function ContactItem({
         </Text>
         {phoneNumber && currentAccount && (
           <Button
-            label={_(msg`Invite ${name} to join Bluesky`)}
+            label={_(msg`Invite ${name} to join Europe Social`)}
             color="secondary"
             size="small"
             onPress={async () => {
@@ -574,7 +574,7 @@ function ContactItem({
                 await SMS.sendSMSAsync(
                   [phoneNumber],
                   _(
-                    msg`I'm on Bluesky as ${currentAccount.handle} - come find me! https://bsky.app/download`,
+                    msg`I'm on Europe Social as ${currentAccount.handle} - come find me! https://eur.so`,
                   ),
                 )
               } catch (err) {

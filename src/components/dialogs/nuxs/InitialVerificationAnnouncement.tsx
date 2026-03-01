@@ -35,7 +35,7 @@ export function InitialVerificationAnnouncement() {
       <Dialog.Handle />
 
       <Dialog.ScrollableInner
-        label={_(msg`Announcing verification on Bluesky`)}
+        label={_(msg`Announcing verification on Europe Social`)}
         style={[
           gtMobile ? {width: 'auto', maxWidth: 400, minWidth: 200} : a.w_full,
         ]}>
@@ -82,7 +82,7 @@ export function InitialVerificationAnnouncement() {
                 },
               ]}
               alt={_(
-                msg`An illustration showing that Bluesky selects trusted verifiers, and trusted verifiers in turn verify individual user accounts.`,
+                msg`An illustration showing that Europe Social selects trusted verifiers, and trusted verifiers in turn verify individual user accounts.`,
               )}
             />
           </View>
@@ -93,8 +93,8 @@ export function InitialVerificationAnnouncement() {
             </Text>
             <Text style={[a.leading_snug, a.text_md]}>
               <Trans>
-                We’re introducing a new layer of verification on Bluesky — an
-                easy-to-see checkmark.
+                We're introducing a new layer of verification on Europe Social
+                — an easy-to-see checkmark.
               </Trans>
             </Text>
           </View>
@@ -116,7 +116,7 @@ export function InitialVerificationAnnouncement() {
                 },
               ]}
               alt={_(
-                msg`An mockup of a iPhone showing the Bluesky app open to the profile of a verified user with a blue checkmark next to their display name.`,
+                msg`A mockup of an iPhone showing the Europe Social app open to the profile of a verified user with a checkmark next to their display name.`,
               )}
             />
           </View>
@@ -131,7 +131,7 @@ export function InitialVerificationAnnouncement() {
             <View style={[a.gap_sm]}>
               <Text style={[a.leading_snug, a.text_md]}>
                 <Trans>
-                  Bluesky will proactively verify notable and authentic
+                  Europe Social will proactively verify notable and authentic
                   accounts.
                 </Trans>
               </Text>

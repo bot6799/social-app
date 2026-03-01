@@ -9,6 +9,8 @@ import {
 type OnboardingScreen =
   | 'profile'
   | 'interests'
+  | 'home-zone'
+  | 'federation'
   | 'suggested-accounts'
   | 'suggested-starterpacks'
   | 'find-contacts-intro'
@@ -38,6 +40,14 @@ export type OnboardingState = {
       emoji: Emoji
       backgroundColor: AvatarColor
     }
+  }
+  homeZoneStepResults: {
+    zone: {id: string; name: string; level: string} | null
+    chain: {id: string; name: string; level: string}[]
+    verified: boolean
+  }
+  federationStepResults: {
+    enabled: boolean
   }
 }
 
@@ -71,19 +81,35 @@ export type OnboardingAction =
           }
         | undefined
     }
+  | {
+      type: 'setHomeZoneStepResults'
+      zone: OnboardingState['homeZoneStepResults']['zone']
+      chain: OnboardingState['homeZoneStepResults']['chain']
+      verified: boolean
+    }
+  | {
+      type: 'setFederationStepResults'
+      enabled: boolean
+    }
 
 export function createInitialOnboardingState(
   {
     starterPacksStepEnabled,
     findContactsStepEnabled,
+    homeZoneStepEnabled,
+    federationStepEnabled,
   }: {
     starterPacksStepEnabled: boolean
     findContactsStepEnabled: boolean
+    homeZoneStepEnabled?: boolean
+    federationStepEnabled?: boolean
   } = {starterPacksStepEnabled: true, findContactsStepEnabled: false},
 ): OnboardingState {
   const screens: OnboardingState['screens'] = {
     profile: true,
     interests: true,
+    'home-zone': homeZoneStepEnabled ?? false,
+    federation: federationStepEnabled ?? false,
     'suggested-accounts': true,
     'suggested-starterpacks': starterPacksStepEnabled,
     'find-contacts-intro': findContactsStepEnabled,
@@ -103,6 +129,14 @@ export function createInitialOnboardingState(
       image: undefined,
       imageUri: '',
       imageMime: '',
+    },
+    homeZoneStepResults: {
+      zone: null,
+      chain: [],
+      verified: false,
+    },
+    federationStepResults: {
+      enabled: true,
     },
   }
 }
@@ -151,6 +185,8 @@ export function reducer(
       next = createInitialOnboardingState({
         starterPacksStepEnabled: s.screens['suggested-starterpacks'],
         findContactsStepEnabled: s.screens['find-contacts'],
+        homeZoneStepEnabled: s.screens['home-zone'],
+        federationStepEnabled: s.screens.federation,
       })
       break
     }
@@ -170,6 +206,20 @@ export function reducer(
       }
       break
     }
+    case 'setHomeZoneStepResults': {
+      next.homeZoneStepResults = {
+        zone: a.zone,
+        chain: a.chain,
+        verified: a.verified,
+      }
+      break
+    }
+    case 'setFederationStepResults': {
+      next.federationStepResults = {
+        enabled: a.enabled,
+      }
+      break
+    }
   }
 
   const state = {
@@ -184,6 +234,8 @@ export function reducer(
       selectedInterests: state.interestsStepResults.selectedInterests,
     },
     profileStepResults: state.profileStepResults,
+    homeZoneStepResults: state.homeZoneStepResults,
+    federationStepResults: state.federationStepResults,
   })
 
   if (s.activeStep !== state.activeStep) {
@@ -197,6 +249,8 @@ function getStepOrder(s: OnboardingState): OnboardingScreen[] {
   return [
     s.screens.profile && ('profile' as const),
     s.screens.interests && ('interests' as const),
+    s.screens['home-zone'] && ('home-zone' as const),
+    s.screens.federation && ('federation' as const),
     s.screens['suggested-accounts'] && ('suggested-accounts' as const),
     s.screens['suggested-starterpacks'] && ('suggested-starterpacks' as const),
     s.screens['find-contacts-intro'] && ('find-contacts-intro' as const),

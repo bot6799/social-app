@@ -337,8 +337,8 @@ function Empty() {
           </Prompt.TitleText>
           <Prompt.DescriptionText>
             <Trans>
-              Bluesky will choose a set of recommended accounts from people in
-              your network.
+              Europe Social will choose a set of recommended accounts from
+              people in your network.
             </Trans>
           </Prompt.DescriptionText>
         </Prompt.Content>

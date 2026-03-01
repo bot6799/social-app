@@ -23,6 +23,8 @@ import {Portal} from '#/components/Portal'
 import {ScreenTransition} from '#/components/ScreenTransition'
 import {useAnalytics} from '#/analytics'
 import {ENV, IS_NATIVE} from '#/env'
+import {StepFederation} from '#europe/onboarding/StepFederation'
+import {StepHomeZone} from '#europe/onboarding/StepHomeZone'
 import {StepFindContacts} from './StepFindContacts'
 import {StepFindContactsIntro} from './StepFindContactsIntro'
 import {StepSuggestedAccounts} from './StepSuggestedAccounts'
@@ -54,6 +56,8 @@ export function Onboarding() {
     {
       starterPacksStepEnabled: showSuggestedStarterpacks,
       findContactsStepEnabled: showFindContacts,
+      homeZoneStepEnabled: true,
+      federationStepEnabled: true,
     },
     createInitialOnboardingState,
   )
@@ -80,6 +84,8 @@ export function Onboarding() {
                   <Layout>
                     {state.activeStep === 'profile' && <StepProfile />}
                     {state.activeStep === 'interests' && <StepInterests />}
+                    {state.activeStep === 'home-zone' && <StepHomeZone />}
+                    {state.activeStep === 'federation' && <StepFederation />}
                     {state.activeStep === 'suggested-accounts' && (
                       <StepSuggestedAccounts />
                     )}

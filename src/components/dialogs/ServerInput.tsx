@@ -3,7 +3,7 @@ import {useWindowDimensions, View} from 'react-native'
 import {msg, Trans} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
-import {BSKY_SERVICE} from '#/lib/constants'
+import {DEFAULT_SERVICE} from '#/lib/constants'
 import * as persisted from '#/state/persisted'
 import {useSession} from '#/state/session'
 import {atoms as a, platform, useBreakpoints, useTheme, web} from '#/alf'
@@ -17,7 +17,7 @@ import {InlineLinkText} from '#/components/Link'
 import {Text} from '#/components/Typography'
 import {useAnalytics} from '#/analytics'
 
-type SegmentedControlOptions = typeof BSKY_SERVICE | 'custom'
+type SegmentedControlOptions = typeof DEFAULT_SERVICE | 'custom'
 
 export function ServerInputDialog({
   control,
@@ -32,19 +32,19 @@ export function ServerInputDialog({
 
   // persist these options between dialog open/close
   const [fixedOption, setFixedOption] =
-    useState<SegmentedControlOptions>(BSKY_SERVICE)
+    useState<SegmentedControlOptions>(DEFAULT_SERVICE)
   const [previousCustomAddress, setPreviousCustomAddress] = useState('')
 
   const onClose = useCallback(() => {
     const result = formRef.current?.getFormState()
     if (result) {
       onSelect(result)
-      if (result !== BSKY_SERVICE) {
+      if (result !== DEFAULT_SERVICE) {
         setPreviousCustomAddress(result)
       }
     }
     ax.metric('signin:hostingProviderPressed', {
-      hostingProviderDidChange: fixedOption !== BSKY_SERVICE,
+      hostingProviderDidChange: fixedOption !== DEFAULT_SERVICE,
     })
   }, [ax, onSelect, fixedOption])
 
@@ -142,11 +142,11 @@ function DialogInner({
           value={fixedOption}
           onChange={setFixedOption}>
           <SegmentedControl.Item
-            testID="bskyServiceSelectBtn"
-            value={BSKY_SERVICE}
-            label={_(msg`Bluesky`)}>
+            testID="defaultServiceSelectBtn"
+            value={DEFAULT_SERVICE}
+            label={_(msg`Europe Social`)}>
             <SegmentedControl.ItemText>
-              {_(msg`Bluesky`)}
+              {_(msg`Europe Social`)}
             </SegmentedControl.ItemText>
           </SegmentedControl.Item>
           <SegmentedControl.Item
@@ -159,13 +159,13 @@ function DialogInner({
           </SegmentedControl.Item>
         </SegmentedControl.Root>
 
-        {fixedOption === BSKY_SERVICE && isFirstTimeUser && (
+        {fixedOption === DEFAULT_SERVICE && isFirstTimeUser && (
           <View role="tabpanel">
             <Admonition type="tip">
               <Trans>
-                Bluesky is an open network where you can choose your own
-                provider. If you're new here, we recommend sticking with the
-                default Bluesky Social option.
+                Europe Social is built on the AT Protocol, an open network
+                where you can choose your own provider. If you're new here, we
+                recommend sticking with the default Europe Social server.
               </Trans>
             </Admonition>
           </View>
@@ -215,8 +215,9 @@ function DialogInner({
               </Trans>
             ) : (
               <Trans>
-                Bluesky is an open network where you can choose your hosting
-                provider. If you're a developer, you can host your own server.
+                Europe Social is built on the AT Protocol, an open network
+                where you can choose your hosting provider. If you're a
+                developer, you can host your own server.
               </Trans>
             )}{' '}
             <InlineLinkText

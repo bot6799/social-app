@@ -123,8 +123,8 @@ function Intro() {
       <ContactsHeroImage />
       <Text style={[a.text_md, a.leading_snug, t.atoms.text_contrast_medium]}>
         <Trans>
-          Find your friends on Bluesky by verifying your phone number and
-          matching with your contacts. We protect your information and you
+          Find your friends on Europe Social by verifying your phone number
+          and matching with your contacts. We protect your information and you
           control what happens next.{' '}
           <InlineLinkText
             to={urls.website.blog.findFriendsAnnouncement}
@@ -546,8 +546,8 @@ function StatusFooter({syncedAt}: {syncedAt: string}) {
         </Text>
         <Text style={[a.text_sm, a.leading_snug, t.atoms.text_contrast_medium]}>
           <Trans>
-            Bluesky stores your contacts as encoded data. Removing your contacts
-            will immediately delete this data.
+            Europe Social stores your contacts as encoded data. Removing your
+            contacts will immediately delete this data.
           </Trans>
         </Text>
         <Button

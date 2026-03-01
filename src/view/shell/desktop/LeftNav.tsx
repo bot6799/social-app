@@ -76,6 +76,7 @@ import {Text} from '#/components/Typography'
 import {useActorStatus} from '#/features/liveNow'
 import {PlatformInfo} from '../../../../modules/expo-bluesky-swiss-army'
 import {router} from '../../../routes'
+import {EuropeNavIcon, EuropeNavIconFilled} from '#europe/widgets/EuropeNavIcon'
 
 const NAV_ICON_WIDTH = 28
 
@@ -801,6 +802,24 @@ export function DesktopLeftNav() {
               />
             }
             label={_(msg`Settings`)}
+          />
+          <NavItem
+            href="/europe"
+            icon={
+              <EuropeNavIcon
+                aria-hidden={true}
+                width={NAV_ICON_WIDTH}
+                style={pal.text}
+              />
+            }
+            iconFilled={
+              <EuropeNavIconFilled
+                aria-hidden={true}
+                width={NAV_ICON_WIDTH}
+                style={pal.text}
+              />
+            }
+            label={_(msg`Europe`)}
           />
 
           <ComposeBtn />

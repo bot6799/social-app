@@ -1,8 +1,13 @@
-import {useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 
 import {type Incident, incidentAPI} from '#europe/services/incident-api'
 import {translationAPI} from '#europe/services/translation-api'
-import {type SidebarData, type Zone, zoneAPI} from '#europe/services/zone-api'
+import {
+  type SidebarData,
+  type UserHomeZone,
+  type Zone,
+  zoneAPI,
+} from '#europe/services/zone-api'
 
 // Query keys
 export const ZONE_KEYS = {
@@ -13,6 +18,7 @@ export const ZONE_KEYS = {
   userHome: (did: string) => [...ZONE_KEYS.all, 'userHome', did] as const,
   stats: (id: string) => [...ZONE_KEYS.all, 'stats', id] as const,
   sidebar: (did?: string) => [...ZONE_KEYS.all, 'sidebar', did] as const,
+  search: (query: string) => [...ZONE_KEYS.all, 'search', query] as const,
 }
 
 export const INCIDENT_KEYS = {
@@ -70,6 +76,34 @@ export function useSidebarQuery(did?: string) {
     queryKey: ZONE_KEYS.sidebar(did),
     queryFn: () => zoneAPI.getSidebar(did),
     staleTime: 60 * 1000, // 1 minute
+  })
+}
+
+export function useZoneSearchQuery(query: string) {
+  return useQuery<Zone[]>({
+    queryKey: ZONE_KEYS.search(query),
+    queryFn: () => zoneAPI.searchZones(query),
+    staleTime: 30 * 1000,
+    enabled: query.length >= 2,
+  })
+}
+
+export function useSetHomeZoneMutation() {
+  const queryClient = useQueryClient()
+
+  return useMutation<
+    UserHomeZone,
+    Error,
+    {did: string; zoneId: string; verified?: boolean}
+  >({
+    mutationFn: ({did, zoneId, verified}) =>
+      zoneAPI.setHomeZone(did, zoneId, verified),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({queryKey: ZONE_KEYS.sidebar()})
+      queryClient.invalidateQueries({
+        queryKey: ZONE_KEYS.userHome(variables.did),
+      })
+    },
   })
 }
 

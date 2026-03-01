@@ -131,6 +131,12 @@ import {
 import {Wizard} from '#/screens/StarterPack/Wizard'
 import TopicScreen from '#/screens/Topic'
 import {VideoFeed} from '#/screens/VideoFeed'
+import {EuropeDashboard} from '#europe/EuropeDashboard'
+import {FederationSettingsScreen} from '#europe/settings/FederationSettings'
+import {ZoneSelectorScreen} from '#europe/zones/ZoneSelectorScreen'
+import {IncidentsScreen} from '#europe/incidents/IncidentsScreen'
+import {TranslationTestScreen} from '#europe/translation/TranslationTestScreen'
+import {EuropeFeedsScreen} from '#europe/feeds/EuropeFeeds'
 import {type Theme, useTheme} from '#/alf'
 import {
   EmailDialogScreenID,
@@ -629,6 +635,37 @@ function commonScreens(Stack: typeof Flat, unreadCountLabel?: string) {
           gestureEnabled: false,
         }}
       />
+      <Stack.Screen
+        name="FederationSettings"
+        getComponent={() => FederationSettingsScreen}
+        options={{title: title(msg`Federation`)}}
+      />
+      {/* Europe Social screens */}
+      <Stack.Screen
+        name="EuropeDashboard"
+        getComponent={() => EuropeDashboard}
+        options={{title: title(msg`Europe Social`)}}
+      />
+      <Stack.Screen
+        name="EuropeZones"
+        getComponent={() => ZoneSelectorScreen}
+        options={{title: title(msg`Zones`)}}
+      />
+      <Stack.Screen
+        name="EuropeIncidents"
+        getComponent={() => IncidentsScreen}
+        options={{title: title(msg`Incidents`)}}
+      />
+      <Stack.Screen
+        name="EuropeTranslation"
+        getComponent={() => TranslationTestScreen}
+        options={{title: title(msg`Translation`)}}
+      />
+      <Stack.Screen
+        name="EuropeFeeds"
+        getComponent={() => EuropeFeedsScreen}
+        options={{title: title(msg`Zone Feeds`)}}
+      />
     </>
   )
 }
@@ -816,7 +853,7 @@ const FlatNavigator = ({
 const LINKING = {
   // TODO figure out what we are going to use
   // note: `bluesky://` is what is used in app.config.js
-  prefixes: ['bsky://', 'bluesky://', 'https://bsky.app'],
+  prefixes: ['eurso://', 'https://eur.so', 'https://app.eur.so', 'bsky://', 'https://bsky.app'],
 
   getPathFromState(state: State) {
     // find the current node in the navigation tree

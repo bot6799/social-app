@@ -89,6 +89,13 @@ export type CommonNavigatorParams = {
   VideoFeed: VideoFeedSourceContext
   Bookmarks: undefined
   FindContactsFlow: undefined
+  FederationSettings: undefined
+  // Europe Social screens
+  EuropeDashboard: undefined
+  EuropeZones: undefined
+  EuropeIncidents: undefined
+  EuropeTranslation: undefined
+  EuropeFeeds: undefined
 }
 
 export type BottomTabNavigatorParams = CommonNavigatorParams & {

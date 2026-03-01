@@ -36,6 +36,7 @@ module.exports = function (api) {
         {
           alias: {
             // This needs to be mirrored in tsconfig.json
+            '#europe': './src-europe',
             '#': './src',
             crypto: './src/platform/crypto.ts',
           },

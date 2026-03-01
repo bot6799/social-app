@@ -28,35 +28,32 @@ export const SplashScreen = ({
 }) => {
   const t = useTheme()
   const {_} = useLingui()
-  const isDarkMode = t.name !== 'light'
 
   const playHaptic = useHaptics()
 
   const styles = useMemo(() => {
-    const logoFill = isDarkMode ? 'white' : t.palette.primary_500
+    const logoFill = 'white'
     return {
       logoFill,
-      logoShadow: isDarkMode
-        ? [
-            t.atoms.shadow_md,
-            {
-              shadowColor: logoFill,
-              shadowOpacity: 0.5,
-              shadowOffset: {
-                width: 0,
-                height: 0,
-              },
-            },
-          ]
-        : [],
+      logoShadow: [
+        t.atoms.shadow_md,
+        {
+          shadowColor: logoFill,
+          shadowOpacity: 0.5,
+          shadowOffset: {
+            width: 0,
+            height: 0,
+          },
+        },
+      ],
     }
-  }, [t, isDarkMode])
+  }, [t])
 
   return (
     <>
       <Image
         accessibilityIgnoresInvertColors
-        source={{uri: isDarkMode ? darkSplashImageUri : splashImageUri}}
+        source={{uri: darkSplashImageUri}}
         style={[a.absolute, a.inset_0]}
       />
 
@@ -98,10 +95,10 @@ export const SplashScreen = ({
               }}
               label={_(msg`Create new account`)}
               accessibilityHint={_(
-                msg`Opens flow to create a new Bluesky account`,
+                msg`Opens flow to create a new Europe Social account`,
               )}
               size="large"
-              color={isDarkMode ? 'secondary_inverted' : 'secondary'}>
+              color="secondary_inverted">
               <ButtonText>
                 <Trans>Create account</Trans>
               </ButtonText>
@@ -116,7 +113,7 @@ export const SplashScreen = ({
             }}
             label={_(msg`Sign in`)}
             accessibilityHint={_(
-              msg`Opens flow to sign in to your existing Bluesky account`,
+              msg`Opens flow to sign in to your existing Europe Social account`,
             )}
             size="large">
             <ButtonText style={{color: 'white'}}>

@@ -115,14 +115,14 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
           </>
         )}
         <InlineLinkText
-          to="https://bsky.social/about/support/privacy-policy"
+          to="https://europesocial.org/privacy"
           style={[t.atoms.text_contrast_medium]}
           label={_(msg`Privacy`)}>
           {_(msg`Privacy`)}
         </InlineLinkText>
         <Text style={[t.atoms.text_contrast_low]}>{' ∙ '}</Text>
         <InlineLinkText
-          to="https://bsky.social/about/support/tos"
+          to="https://europesocial.org/terms"
           style={[t.atoms.text_contrast_medium]}
           label={_(msg`Terms`)}>
           {_(msg`Terms`)}
@@ -133,6 +133,13 @@ export function DesktopRightNav({routeName}: {routeName: string}) {
           to={HELP_DESK_URL}
           style={[t.atoms.text_contrast_medium]}>
           {_(msg`Help`)}
+        </InlineLinkText>
+        <Text style={[t.atoms.text_contrast_low]}>{' ∙ '}</Text>
+        <InlineLinkText
+          label={_(msg`About`)}
+          to="https://europesocial.org"
+          style={[t.atoms.text_contrast_medium]}>
+          {_(msg`About`)}
         </InlineLinkText>
       </Text>
 

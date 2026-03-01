@@ -19,6 +19,8 @@ import {
   TIMELINE_SAVED_FEED,
   VIDEO_SAVED_FEED,
 } from '#/lib/constants'
+import {useSetFederationEnabled} from '#europe/state/federation'
+import {zoneAPI} from '#europe/services/zone-api'
 import {useRequestNotificationsPermission} from '#/lib/notifications/notifications'
 import {logger} from '#/logger'
 import {useSetHasCheckedForStarterPack} from '#/state/preferences/used-starter-packs'
@@ -62,6 +64,7 @@ export function StepFinished() {
   const setActiveStarterPack = useSetActiveStarterPack()
   const setHasCheckedForStarterPack = useSetHasCheckedForStarterPack()
   const {startProgressGuide} = useProgressGuideControls()
+  const setFederationEnabled = useSetFederationEnabled()
 
   const finishOnboarding = useCallback(async () => {
     setSaving(true)
@@ -92,7 +95,8 @@ export function StepFinished() {
     }
 
     try {
-      const {interestsStepResults, profileStepResults} = state
+      const {interestsStepResults, profileStepResults, homeZoneStepResults} =
+        state
       const {selectedInterests} = interestsStepResults
 
       await Promise.all([
@@ -132,6 +136,20 @@ export function StepFinished() {
                 pinned: true,
                 id: TID.nextStr(),
               })),
+            )
+          }
+
+          // Pin zone feeds from onboarding home zone selection
+          if (homeZoneStepResults.chain.length > 0) {
+            feedsToSave.push(
+              ...homeZoneStepResults.chain
+                .filter(z => z.level !== 'global')
+                .map(z => ({
+                  type: 'feed' as const,
+                  value: `at://did:web:eur.so/app.bsky.feed.generator/${z.id}`,
+                  pinned: true,
+                  id: TID.nextStr(),
+                })),
             )
           }
 
@@ -178,7 +196,28 @@ export function StepFinished() {
           })
         })(),
         requestNotificationsPermission('AfterOnboarding'),
+        // Set home zone if user selected one during onboarding
+        (async () => {
+          if (homeZoneStepResults.zone) {
+            try {
+              await zoneAPI.setHomeZone(
+                agent.session?.did ?? '',
+                homeZoneStepResults.zone.id,
+                homeZoneStepResults.verified,
+              )
+            } catch (e) {
+              logger.error('Failed to set home zone during onboarding', {
+                safeMessage: e,
+              })
+              // Non-fatal: user can set it later from zone settings
+            }
+          }
+        })(),
       ])
+      // Set federation preference from onboarding
+      if (state.federationStepResults) {
+        setFederationEnabled(state.federationStepResults.enabled)
+      }
     } catch (e: any) {
       logger.info(`onboarding: bulk save failed`)
       logger.error(e)
@@ -238,6 +277,7 @@ export function StepFinished() {
     setActiveStarterPack,
     setHasCheckedForStarterPack,
     startProgressGuide,
+    setFederationEnabled,
   ])
 
   return (

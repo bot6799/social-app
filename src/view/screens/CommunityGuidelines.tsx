@@ -42,8 +42,8 @@ export const CommunityGuidelinesScreen = (_props: Props) => {
               The Community Guidelines have been moved to{' '}
               <TextLink
                 style={pal.link}
-                href="https://bsky.social/about/support/community-guidelines"
-                text="bsky.social/about/support/community-guidelines"
+                href="https://europesocial.org/community-guidelines"
+                text="europesocial.org/community-guidelines"
               />
             </Trans>
           </Text>

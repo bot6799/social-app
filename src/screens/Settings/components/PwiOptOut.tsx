@@ -97,9 +97,9 @@ export function PwiOptOut() {
 
       <Text style={[a.leading_snug, t.atoms.text_contrast_high]}>
         <Trans>
-          Bluesky will not show your profile and posts to logged-out users.
-          Other apps may not honor this request. This does not make your account
-          private.
+          Europe Social will not show your profile and posts to logged-out
+          users. Other apps may not honor this request. This does not make your
+          account private.
         </Trans>
       </Text>
     </View>

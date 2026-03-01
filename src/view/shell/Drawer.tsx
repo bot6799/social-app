@@ -697,14 +697,20 @@ function ExtraLinks() {
       <InlineLinkText
         style={[a.text_md]}
         label={_(msg`Terms of Service`)}
-        to="https://bsky.social/about/support/tos">
+        to="https://europesocial.org/terms">
         <Trans>Terms of Service</Trans>
       </InlineLinkText>
       <InlineLinkText
         style={[a.text_md]}
-        to="https://bsky.social/about/support/privacy-policy"
+        to="https://europesocial.org/privacy"
         label={_(msg`Privacy Policy`)}>
         <Trans>Privacy Policy</Trans>
+      </InlineLinkText>
+      <InlineLinkText
+        style={[a.text_md]}
+        label={_(msg`About Europe Social`)}
+        to="https://europesocial.org">
+        <Trans>About Europe Social</Trans>
       </InlineLinkText>
       {kawaii && (
         <Text style={t.atoms.text_contrast_medium}>

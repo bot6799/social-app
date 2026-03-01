@@ -13,7 +13,7 @@ import {
   AppClipOverlay,
   postAppClipMessage,
 } from '#/screens/StarterPack/StarterPackLandingScreen'
-import {atoms as a, useTheme} from '#/alf'
+import {atoms as a} from '#/alf'
 import {AppLanguageDropdown} from '#/components/AppLanguageDropdown'
 import {Button, ButtonText} from '#/components/Button'
 import * as Layout from '#/components/Layout'
@@ -30,7 +30,6 @@ export const SplashScreen = ({
   onPressCreateAccount: () => void
 }) => {
   const {_} = useLingui()
-  const t = useTheme()
   const {isTabletOrMobile: IS_WEB_MOBILE} = useWebMediaQueries()
   const [showClipOverlay, setShowClipOverlay] = React.useState(false)
 
@@ -64,13 +63,13 @@ export const SplashScreen = ({
             icon="x"
             size={24}
             style={{
-              color: String(t.atoms.text.color),
+              color: '#FFFFFF',
             }}
           />
         </Pressable>
       )}
 
-      <Layout.Center style={[a.h_full, a.flex_1]} ignoreTabletLayoutOffset>
+      <Layout.Center style={[a.h_full, a.flex_1, {backgroundColor: '#000000'}]} ignoreTabletLayoutOffset>
         <View
           testID="noSessionView"
           style={[
@@ -79,18 +78,18 @@ export const SplashScreen = ({
             // @ts-expect-error web only
             {paddingBottom: '20vh'},
             IS_WEB_MOBILE && a.pb_5xl,
-            t.atoms.border_contrast_medium,
+            {borderColor: '#333333'},
             a.align_center,
             a.gap_5xl,
             a.flex_1,
           ]}>
           <ErrorBoundary>
             <View style={[a.justify_center, a.align_center]}>
-              <Logo width={kawaii ? 300 : 92} fill="sky" />
+              <Logo width={kawaii ? 300 : 92} fill="white" />
 
               {!kawaii && (
                 <View style={[a.pb_sm, a.pt_5xl]}>
-                  <Logotype width={161} fill={t.atoms.text.color} />
+                  <Logotype width={161} fill="#FFFFFF" />
                 </View>
               )}
 
@@ -98,9 +97,9 @@ export const SplashScreen = ({
                 style={[
                   a.text_md,
                   a.font_semi_bold,
-                  t.atoms.text_contrast_medium,
+                  {color: '#999999'},
                 ]}>
-                <Trans>What's up?</Trans>
+                <Trans>Europe's Square. Your Voice.</Trans>
               </Text>
             </View>
 
@@ -112,7 +111,7 @@ export const SplashScreen = ({
                 onPress={onPressCreateAccount}
                 label={_(msg`Create new account`)}
                 accessibilityHint={_(
-                  msg`Opens flow to create a new Bluesky account`,
+                  msg`Opens flow to create a new Europe Social account`,
                 )}
                 size="large"
                 variant="solid"
@@ -126,11 +125,11 @@ export const SplashScreen = ({
                 onPress={onPressSignin}
                 label={_(msg`Sign in`)}
                 accessibilityHint={_(
-                  msg`Opens flow to sign in to your existing Bluesky account`,
+                  msg`Opens flow to sign in to your existing Europe Social account`,
                 )}
                 size="large"
                 variant="solid"
-                color="secondary">
+                color="secondary_inverted">
                 <ButtonText>
                   <Trans>Sign in</Trans>
                 </ButtonText>
@@ -149,7 +148,6 @@ export const SplashScreen = ({
 }
 
 function Footer() {
-  const t = useTheme()
   const {_} = useLingui()
 
   return (
@@ -166,24 +164,28 @@ function Footer() {
         a.flex_wrap,
         a.gap_xl,
         a.flex_1,
-        t.atoms.border_contrast_medium,
+        {borderTopColor: '#333333'},
       ]}>
+      <Text style={[a.text_sm, {color: '#999999'}]}>
+        <Trans>A fork of Bluesky, built for Europe</Trans>
+      </Text>
       <InlineLinkText
         label={_(msg`Learn more about Bluesky`)}
-        to="https://bsky.social">
-        <Trans>Business</Trans>
+        to="https://bsky.social"
+        style={[{color: '#CCCCCC'}]}>
+        <Trans>Powered by Bluesky</Trans>
       </InlineLinkText>
       <InlineLinkText
-        label={_(msg`Read the Bluesky blog`)}
-        to="https://bsky.social/about/blog">
-        <Trans>Blog</Trans>
+        label={_(msg`Learn about the AT Protocol`)}
+        to="https://atproto.com"
+        style={[{color: '#CCCCCC'}]}>
+        <Trans>AT Protocol</Trans>
       </InlineLinkText>
       <InlineLinkText
-        label={_(msg`See jobs at Bluesky`)}
-        to="https://bsky.social/about/join">
-        <Trans comment="Link to a page with job openings at Bluesky">
-          Jobs
-        </Trans>
+        label={_(msg`Learn about Europe Social`)}
+        to="https://europesocial.org"
+        style={[{color: '#CCCCCC'}]}>
+        <Trans>Learn about Europe Social</Trans>
       </InlineLinkText>
 
       <View style={a.flex_1} />

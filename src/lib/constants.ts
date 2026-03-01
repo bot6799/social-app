@@ -10,12 +10,13 @@ export const STAGING_SERVICE = 'https://staging.bsky.dev'
 export const BSKY_SERVICE = 'https://bsky.social'
 export const BSKY_SERVICE_DID = 'did:web:bsky.social'
 export const PUBLIC_BSKY_SERVICE = 'https://public.api.bsky.app'
-export const DEFAULT_SERVICE = BSKY_SERVICE
+export const EUROPE_SOCIAL_PDS = 'https://pds.eur.so'
+export const DEFAULT_SERVICE = EUROPE_SOCIAL_PDS
 const HELP_DESK_LANG = 'en-us'
-export const HELP_DESK_URL = `https://blueskyweb.zendesk.com/hc/${HELP_DESK_LANG}`
-export const EMBED_SERVICE = 'https://embed.bsky.app'
+export const HELP_DESK_URL = `https://europesocial.org/support`
+export const EMBED_SERVICE = 'https://embed.eur.so'
 export const EMBED_SCRIPT = `${EMBED_SERVICE}/static/embed.js`
-export const BSKY_DOWNLOAD_URL = 'https://bsky.app/download'
+export const BSKY_DOWNLOAD_URL = 'https://eur.so/download'
 export const STARTER_PACK_MAX_SIZE = 150
 export const CARD_ASPECT_RATIO = 1200 / 630
 
@@ -115,7 +116,7 @@ export function LINK_META_PROXY(serviceUrl: string) {
   return STAGING_LINK_META_PROXY
 }
 
-export const STATUS_PAGE_URL = 'https://status.bsky.app/'
+export const STATUS_PAGE_URL = 'https://europesocial.org/status'
 
 // Hitslop constants
 export const createHitslop = (size: number): Insets => ({
@@ -206,13 +207,13 @@ export const urls = {
   website: {
     blog: {
       findFriendsAnnouncement:
-        'https://bsky.social/about/blog/12-16-2025-find-friends',
-      initialVerificationAnnouncement: `https://bsky.social/about/blog/04-21-2025-verification`,
-      searchTipsAndTricks: 'https://bsky.social/about/blog/05-31-2024-search',
+        'https://europesocial.org/blog/find-friends',
+      initialVerificationAnnouncement: `https://europesocial.org/blog/verification`,
+      searchTipsAndTricks: 'https://europesocial.org/blog/search-tips',
     },
     support: {
       findFriendsPrivacyPolicy:
-        'https://bsky.social/about/support/find-friends-privacy-policy',
+        'https://europesocial.org/privacy/find-friends',
     },
   },
 }
@@ -247,9 +248,11 @@ export const BLUESKY_NOTIF_SERVICE_HEADERS = {
   'atproto-proxy': `${BLUESKY_PROXY_DID}#bsky_notif`,
 }
 
+export const EUROPE_SOCIAL_URL = 'https://europesocial.org'
+
 export const webLinks = {
-  tos: `https://bsky.social/about/support/tos`,
-  privacy: `https://bsky.social/about/support/privacy-policy`,
-  community: `https://bsky.social/about/support/community-guidelines`,
-  communityDeprecated: `https://bsky.social/about/support/community-guidelines-deprecated`,
+  tos: `https://europesocial.org/terms`,
+  privacy: `https://europesocial.org/privacy`,
+  community: `https://europesocial.org/community-guidelines`,
+  communityDeprecated: `https://europesocial.org/community-guidelines`,
 }

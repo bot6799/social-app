@@ -31,9 +31,13 @@ const TIMEOUT_INIT = 500 // TODO should base on p99 or something
 const TIMEOUT_PREFER_LOW_LATENCY = 250
 const TIMEOUT_PREFER_FRESH_GATES = 1500
 
+const hasGrowthBookKey = !!env.GROWTHBOOK_CLIENT_KEY
+
 export const features = new GrowthBook({
   apiHost: env.GROWTHBOOK_API_HOST,
-  clientKey: env.GROWTHBOOK_CLIENT_KEY,
+  // GrowthBook throws "Missing clientKey" if empty — use placeholder for
+  // dev/self-hosted builds without a GrowthBook account.
+  clientKey: env.GROWTHBOOK_CLIENT_KEY || 'disabled',
 })
 
 /**
@@ -44,7 +48,9 @@ export const features = new GrowthBook({
  * initialization completes.
  */
 export const init = new Promise<void>(async y => {
-  await features.init({timeout: TIMEOUT_INIT})
+  if (hasGrowthBookKey) {
+    await features.init({timeout: TIMEOUT_INIT})
+  }
   y()
 })
 
@@ -53,6 +59,7 @@ export const init = new Promise<void>(async y => {
  * provided account, if any.
  */
 export async function refresh({strategy}: {strategy: FeatureFetchStrategy}) {
+  if (!hasGrowthBookKey) return
   await features.refreshFeatures({
     timeout:
       strategy === 'prefer-low-latency'

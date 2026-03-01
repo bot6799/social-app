@@ -93,4 +93,11 @@ export const router = new Router<AllNavigatableRoutes>({
   VideoFeed: '/video-feed',
   Bookmarks: '/saved',
   FindContactsFlow: '/find-contacts',
+  FederationSettings: '/settings/federation',
+  // Europe Social routes
+  EuropeDashboard: '/europe',
+  EuropeZones: '/europe/zones',
+  EuropeIncidents: '/europe/incidents',
+  EuropeTranslation: '/europe/translation',
+  EuropeFeeds: '/europe/feeds',
 })
