@@ -26,7 +26,7 @@ module.exports = function (_config) {
     'applinks:eur.so',
     'applinks:app.eur.so',
     'applinks:bsky.app', // AT Protocol link compatibility
-    'appclips:eur.so',
+    // 'appclips:eur.so', // Disabled: App Clip removed for initial TestFlight launch
     // When testing local services, enter an ngrok (et al) domain here. It must use a standard HTTP/HTTPS port.
     ...(IS_DEV || IS_TESTFLIGHT ? [] : []),
   ]
@@ -37,9 +37,9 @@ module.exports = function (_config) {
     expo: {
       version: VERSION,
       name: 'Europe Social',
-      slug: 'europe-social',
+      slug: 'eurso',
       scheme: 'eurso',
-      owner: 'europe-social',
+      owner: 'fillo-organization',
       runtimeVersion: {
         policy: 'appVersion',
       },
@@ -272,7 +272,7 @@ module.exports = function (_config) {
             networkInstrumentation: true,
           },
         ],
-        './plugins/starterPackAppClipExtension/withStarterPackAppClip.js',
+        // './plugins/starterPackAppClipExtension/withStarterPackAppClip.js', // Disabled: App Clip removed for initial TestFlight launch
         './plugins/withGradleJVMHeapSizeIncrease.js',
         './plugins/withAndroidManifestLargeHeapPlugin.js',
         './plugins/withAndroidManifestFCMIconPlugin.js',
@@ -376,10 +376,11 @@ module.exports = function (_config) {
                       ],
                     },
                   },
-                  {
-                    targetName: 'BlueskyClip',
-                    bundleIdentifier: 'so.eur.app.AppClip',
-                  },
+                  // App Clip disabled for initial TestFlight launch
+                  // {
+                  //   targetName: 'BlueskyClip',
+                  //   bundleIdentifier: 'so.eur.app.AppClip',
+                  // },
                 ],
               },
             },
