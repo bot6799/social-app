@@ -384,7 +384,7 @@ module.exports = function (_config) {
               },
             },
           },
-          projectId: '55bd077a-d905-4184-9c7f-94789ba0f302',
+          projectId: 'b546e3d7-de75-48ba-af63-9816932d1bd3',
         },
       },
     },
