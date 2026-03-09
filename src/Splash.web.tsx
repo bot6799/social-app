@@ -1,19 +1,18 @@
-/*
- * This is a reimplementation of what exists in our HTML template files
- * already. Once the React tree mounts, this is what gets rendered first, until
- * the app is ready to go.
- */
+import React, {useEffect} from 'react'
 
-// Europe Social: use our brand logo instead of butterfly SVG
-import {View} from 'react-native'
+type Props = {
+  isReady: boolean
+}
 
-import {Logo} from '#europe/brand/Logo'
-import {atoms as a} from '#/alf'
+export function Splash(props: React.PropsWithChildren<Props>) {
+  useEffect(() => {
+    if (props.isReady) {
+      // Remove the HTML splash screen
+      const el = document.getElementById('splash')
+      if (el) el.style.display = 'none'
+    }
+  }, [props.isReady])
 
-export function Splash() {
-  return (
-    <View style={[a.fixed, a.inset_0, a.align_center, a.justify_center]}>
-      <Logo width={100} style={{position: 'relative', top: -50}} />
-    </View>
-  )
+  // Render children once ready; HTML splash covers until dismissed above
+  return <>{props.isReady ? props.children : null}</>
 }
